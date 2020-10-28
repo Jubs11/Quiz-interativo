@@ -1,114 +1,97 @@
-// bgColor and congratulations
-
-const bgColor = document.querySelector('.wall')
-const congratulations = document.querySelector('.congratulations')
-
-// bgColor and congratulations
-
-// questions and Section questions
-
-const questionsOne = document.querySelector('div.questionsOne')
-const questionsTwo = document.querySelector('div.questionsTwo')
-const questionsThree = document.querySelector('div.questionsThree')
-const questionsFor = document.querySelector('div.questionsFor')
-
-const sectionQuestionOne = document.querySelector('#sectionQuestionOne')
-const sectionQuestionTwo = document.querySelector('#sectionQuestionTwo')
-const sectionQuestionThree = document.querySelector('#sectionQuestionThree')
-const sectionQuestionFor = document.querySelector('#sectionQuestionFor')
-
-const questions = document.querySelectorAll('a')
-
-// questions and Section questions
-
-// answers and score
-
-const answerCorrect = ['C','D','B','A']
-
+let answersCorrect = ['C','D','B','A']
 let answers = []
-
-let answerValue 
-  
+let counter = 0
 let score = 0
 
-// answers and score
+const background = document.body
+const congratulations = document.querySelector('.congratulations')
+
+const sectionQuestionOneQuestions = Array.from(document.querySelectorAll('.questionsOneReal a'))
+const sectionQuestionTwoQuestions = Array.from(document.querySelectorAll('#sectionQuestionTwo a'))
+const sectionQuestionThreeQuestions = Array.from(document.querySelectorAll('#sectionQuestionThree a'))
+const sectionQuestionForQuestions = Array.from(document.querySelectorAll('#sectionQuestionFor a'))
 
 
-// functions
-
-const backgroundSectionQuestAndSectionIndex = (backgroundColor, sectionQuestion, SectionIndex) => {
-    bgColor.style.backgroundColor = backgroundColor
-    sectionQuestion.style.zIndex = SectionIndex
-}
-
-const getValueAndAddInAnswers = () => {
-    answerValue = event.target.getAttribute('value')
-
-    answers.push(answerValue)
-}
-
-const nextQuestionTwoChangeTheBackgroundColorAndStoreTheAnswer = event => {
-    getValueAndAddInAnswers()
-
-    bgColor.style.zIndex = 4
-    sectionQuestionOne.style.zIndex = 4
+const nextQuestion = (sectionQuestion, backgroundColor, lastFunc) => {
+    sectionQuestion.forEach(question => {
+        question.addEventListener('click', event => {
+            const answer = event.target.getAttribute('value')
+            background.style.backgroundColor = backgroundColor
+            answers.push(answer)
     
-    if(sectionQuestionOne.style.zIndex === '4') {
-        bgColor.style.zIndex = 5
-        backgroundSectionQuestAndSectionIndex("#ffd1d9", sectionQuestionTwo, 5)
-    }
-
-}
-
-const nextQuestionThreeChangeTheBackgroundColorAndStoreTheAnswer = event => {
-    getValueAndAddInAnswers()
-
-    if(sectionQuestionTwo.style.zIndex === '5') {
-        backgroundSectionQuestAndSectionIndex("#ffe0d1", sectionQuestionThree, 6)
-       }
-}
-
-const nextQuestionForChangeTheBackgroundColorAndStoreTheAnswer = event => {
-    getValueAndAddInAnswers()
-
-    if(sectionQuestionThree.style.zIndex === '6') {
-        backgroundSectionQuestAndSectionIndex("#9fa0a1", sectionQuestionFor, 7)
-       }
-    
-}
-
-const exitOfQuizAndGoToCongratulationsPage =  event => {
-    getValueAndAddInAnswers()
-    
-    answers.forEach((answer, index) => {
-        if (answer === answerCorrect[index]) {
-                score += 1
-        }
+            event.target.parentElement.parentElement.style.display = 'none'
+            event.target.parentElement.parentElement.nextElementSibling.style.display = 'block'
+         
+            lastFunc()
+        })
     })
 
-    if (sectionQuestionFor.style.zIndex === '7') {
-        congratulations.style.zIndex = 8
-    }
-    if (score >= 3) {
-        congratulations.innerHTML = `<h2>Parabens!!! você acertou ${score} de 4 =)</h2>
-                                    <p>para mais Quizzes clique em <a href="index.html">voltar para os quizzes</a></p>`
-    } else if (score === 2) {
-        congratulations.innerHTML = `<h2>Bom resultado você acertou ${score} de 4 =)</h2>
-                                    <p>para mais Quizzes clique em <a href="index.html">voltar para os quizzes</a></p>`
-    } else {congratulations.innerHTML = `<h2>Que pena você só acertou ${score} de 4 =(</h2>
-                                     <p>para mais Quizzes clique em <a href="index.html">voltar para os quizzes</a></p>`}
-    
+   
+
 }
 
-// functions
+nextQuestion(sectionQuestionOneQuestions, '#ffd1d1', () => {})
 
-questionsOne.addEventListener('click', nextQuestionTwoChangeTheBackgroundColorAndStoreTheAnswer)
+nextQuestion(sectionQuestionTwoQuestions, '#ffddbf', () => {})
 
+nextQuestion(sectionQuestionThreeQuestions, '#adadad', () => {})
 
-questionsTwo.addEventListener('click', nextQuestionThreeChangeTheBackgroundColorAndStoreTheAnswer)
+nextQuestion(sectionQuestionForQuestions, '#fdff8a', () => {
 
+        answers.forEach((answer, index) => {
+            if(answersCorrect[index] === answer) {
+                score +=  25
+                return 
+            }          
+            
+    
+        })
 
-questionsThree.addEventListener('click', nextQuestionForChangeTheBackgroundColorAndStoreTheAnswer)
+      const showScore = setInterval(() => {
+          
+        const showCongratulations = (scorePoints, message) => {
+            if (score === scorePoints) {
+                congratulations.innerHTML = message
+               
+            }
+        }
+        
+        showCongratulations(0, `
+                                <p>para mais Quizzes clique em <a href="index.html">voltar para os quizzes</a></p>
+                                <h2>Você acertou <span style="color:#a32a2a">${counter}%</span> do quiz <p>=(</p></h2>
+                                `
+                            )
+          
+        showCongratulations(25, `
+                                 <p>para mais Quizzes clique em <a href="index.html">voltar para os quizzes</a></p>
+                                 <h2>Você acertou <span style="color:#a32a2a">${counter}%</span> do quiz <p>=(</p></h2> 
+                                `
+                            ) 
+        
+        showCongratulations(50, `
+                                 <p>para mais Quizzes clique em <a href="index.html">voltar para os quizzes</a></p>
+                                 <h2>Bom, você acertou <span style="color:#a3622a">${counter}%</span> do quiz <p>=|</p></h2> 
+                                `
+                            )
+        
+        
+        showCongratulations(75,  `
+                                  <p>para mais Quizzes clique em <a href="index.html">voltar para os quizzes</a></p>
+                                  <h2>Parabens, você acertou <span style="color:#2ea32a">${counter}%</span> do quiz <p>=)</p></h2> 
+                                 `
+                            )
 
+        showCongratulations(100,  `
+                                  <p>para mais Quizzes clique em <a href="index.html">voltar para os quizzes</a></p>
+                                  <h2>Parabens, você acertou <span style="color:#2ea32a">${counter}%</span> do quiz <p>=)</p></h2> 
+                                 `
+                            )                   
+        
+            if (score === counter) {
+            return  clearInterval(showScore)      
+           }
+           counter++
+       }, 10)
+        
+})
 
-questionsFor.addEventListener('click', exitOfQuizAndGoToCongratulationsPage)
