@@ -6,7 +6,7 @@ let score = 0
 const background = document.body
 const congratulations = document.querySelector('.congratulations')
 
-const sectionQuestionOneQuestions = Array.from(document.querySelectorAll('.questionsOneReal a'))
+const sectionQuestionOneQuestions = Array.from(document.querySelectorAll('#sectionQuestionOne a'))
 const sectionQuestionTwoQuestions = Array.from(document.querySelectorAll('#sectionQuestionTwo a'))
 const sectionQuestionThreeQuestions = Array.from(document.querySelectorAll('#sectionQuestionThree a'))
 const sectionQuestionForQuestions = Array.from(document.querySelectorAll('#sectionQuestionFor a'))
@@ -30,13 +30,16 @@ const nextQuestion = (sectionQuestion, backgroundColor, lastFunc) => {
 
 }
 
-nextQuestion(sectionQuestionOneQuestions, '#ffd1d1', () => {})
+console.log(background.style)
 
-nextQuestion(sectionQuestionTwoQuestions, '#ffddbf', () => {})
 
-nextQuestion(sectionQuestionThreeQuestions, '#adadad', () => {})
+nextQuestion(sectionQuestionOneQuestions, "#ffd1d1", () => {})
 
-nextQuestion(sectionQuestionForQuestions, '#fdff8a', () => {
+nextQuestion(sectionQuestionTwoQuestions, "#ffddbf", () => {})
+
+nextQuestion(sectionQuestionThreeQuestions, "#adadad", () => {})
+
+nextQuestion(sectionQuestionForQuestions, "#fdff8a", () => {
 
         answers.forEach((answer, index) => {
             if(answersCorrect[index] === answer) {
