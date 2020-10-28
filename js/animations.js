@@ -1,26 +1,29 @@
 let answersCorrect = ['C','D','B','A']
-let answers = []
+let answersUser = []
 let counter = 0
 let score = 0
 
 const background = document.body
 const congratulations = document.querySelector('.congratulations')
 
-const sectionQuestionOneQuestions = Array.from(document.querySelectorAll('#sectionQuestionOne a'))
-const sectionQuestionTwoQuestions = Array.from(document.querySelectorAll('#sectionQuestionTwo a'))
-const sectionQuestionThreeQuestions = Array.from(document.querySelectorAll('#sectionQuestionThree a'))
-const sectionQuestionForQuestions = Array.from(document.querySelectorAll('#sectionQuestionFor a'))
+const answersOfQuestionOne = Array.from(document.querySelectorAll('#sectionQuestionOne a'))
+const answersOfQuestionTwo = Array.from(document.querySelectorAll('#sectionQuestionTwo a'))
+const answersOfQuestionThree = Array.from(document.querySelectorAll('#sectionQuestionThree a'))
+const answersOfQuestionFor = Array.from(document.querySelectorAll('#sectionQuestionFor a'))
 
 
-const nextQuestion = (sectionQuestion, backgroundColor, lastFunc) => {
-    sectionQuestion.forEach(question => {
+const nextQuestion = (answers, backgroundColor, lastFunc) => {
+    answers.forEach(question => {
         question.addEventListener('click', event => {
+            const sectionQuestion = event.target.parentElement.parentElement
             const answer = event.target.getAttribute('value')
+
             background.style.backgroundColor = backgroundColor
-            answers.push(answer)
+
+            answersUser.push(answer)
     
-            event.target.parentElement.parentElement.style.display = 'none'
-            event.target.parentElement.parentElement.nextElementSibling.style.display = 'block'
+            sectionQuestion.style.display = 'none'
+            sectionQuestion.nextElementSibling.style.display = 'block'
          
             lastFunc()
         })
@@ -31,15 +34,15 @@ const nextQuestion = (sectionQuestion, backgroundColor, lastFunc) => {
 }
 
 
-nextQuestion(sectionQuestionOneQuestions, "#ffd1d1", () => {})
+nextQuestion(answersOfQuestionOne, "#ffd1d1", () => {})
 
-nextQuestion(sectionQuestionTwoQuestions, "#ffddbf", () => {})
+nextQuestion(answersOfQuestionTwo, "#ffddbf", () => {})
 
-nextQuestion(sectionQuestionThreeQuestions, "#adadad", () => {})
+nextQuestion(answersOfQuestionThree, "#adadad", () => {})
 
-nextQuestion(sectionQuestionForQuestions, "#fdff8a", () => {
+nextQuestion(answersOfQuestionFor, "#fdff8a", () => {
 
-        answers.forEach((answer, index) => {
+        answersUser.forEach((answer, index) => {
             if(answersCorrect[index] === answer) {
                 score +=  25
                 return 
@@ -48,8 +51,8 @@ nextQuestion(sectionQuestionForQuestions, "#fdff8a", () => {
     
         })
 
-      const showScore = setInterval(() => {
-          
+      const showScore = setInterval(() => {  
+
         const showCongratulations = (scorePoints, message) => {
             if (score === scorePoints) {
                 congratulations.innerHTML = message
@@ -92,7 +95,6 @@ nextQuestion(sectionQuestionForQuestions, "#fdff8a", () => {
             return  clearInterval(showScore)      
            }
            counter++
-       }, 10)
-        
+       }, 10)    
 })
 
